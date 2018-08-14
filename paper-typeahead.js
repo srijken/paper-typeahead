@@ -164,8 +164,14 @@
 
         if (childTemplate) {
           const items = this.$['item-list'];
-          this.templatize(childTemplate);
-          items.templatize(childTemplate);
+          
+          if(Polymer.Element){
+            items.removeChild(items.childNodes[0]);
+            items.appendChild(childTemplate);
+          } else {
+            this.templatize(childTemplate);
+            items.templatize(childTemplate);
+          }
         }
       }
     },
