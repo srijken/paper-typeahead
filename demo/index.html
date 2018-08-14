@@ -1,52 +1,52 @@
 <html>
-  <head>
-    <link rel="import" href="../../polymer/polymer.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    
-    <link rel="import" href="../../iron-ajax/iron-ajax.html">
-    <link rel="import" href="../paper-typeahead.html">
-    <style>
-      h1 {
-        font-family: Roboto, Helvetica Neue, Helvetica;
-        font-weight: 100;
-      }
-      .custom.result-item {
-        background: red;
-        color: #fff;
-      }
-      .custom.result-item.iron-selected {
-        background: teal;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>List of string data</h1>
-    <demo-snippet>
-      <template> 
-        <dom-bind>
-          <template id="sample" is="dom-bind">
-            <iron-ajax url="data/dogs.json" last-response="{{data}}" auto></iron-ajax>
-            <paper-typeahead label="which dog?" data="[[data]]"></paper-typeahead>
-          </template>
-        </dom-bind>
-      </template>
-    </demo-snippet>
-    <h1>List of string data with custom item template</h1>
-    <dom-bind>
-      <template id="dom-bind-two" is="dom-bind">
-        <iron-ajax url="data/dogs.json" last-response="{{data}}" auto></iron-ajax>
-        <paper-typeahead label="which dog?" data="[[data]]">
-        <template>
-          <div
-              on-mouseenter="_mouseenterItem"
-              class="custom result-item selectable"
-              tabindex="-1">I am a dog [[item]]</div>
+<head>
+  <link rel="import" href="../../polymer/polymer.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+
+  <link rel="import" href="../../iron-ajax/iron-ajax.html">
+  <link rel="import" href="../paper-typeahead.html">
+  <style>
+    h1 {
+      font-family: Roboto, Helvetica Neue, Helvetica;
+      font-weight: 100;
+    }
+    .custom.result-item {
+      background: red;
+      color: #fff;
+    }
+    .custom.result-item.iron-selected {
+      background: teal;
+    }
+  </style>
+</head>
+<body>
+  <h1>List of string data</h1>
+  <demo-snippet>
+    <template>
+      <dom-bind>
+        <template id="sample" is="dom-bind">
+          <iron-ajax url="data/dogs.json" last-response="{{data}}" auto></iron-ajax>
+          <paper-typeahead label="which dog?" data="[[data]]"></paper-typeahead>
         </template>
-        </paper-typeahead>
-      </template>
-    </dom-bind>
-    <h1>List of object data</h1>
-    <pre>
+      </dom-bind>
+    </template>
+  </demo-snippet>
+  <h1>List of string data with custom item template</h1>
+  <dom-bind>
+    <template id="dom-bind-two" is="dom-bind">
+      <iron-ajax url="data/dogs.json" last-response="{{data}}" auto></iron-ajax>
+      <paper-typeahead label="which dog?" data="[[data]]">
+        <template>
+          <div 
+            on-mouseenter="_mouseenterItem"
+            class="custom result-item selectable"
+            tabindex="-1">I am a dog [[item]]</div>
+        </template>
+      </paper-typeahead>
+    </template>
+  </dom-bind>
+  <h1>List of object data</h1>
+  <pre>
     <code>
       [
         {name: {title: 'red'}},
@@ -60,32 +60,40 @@
       ]
     </code>
     </pre>
-    <dom-bind>
-      <template is="dom-bind" id="object-list">
-        <paper-typeahead
-          label="which color"
-          data-key="name.title"
-          data="[[data]]"></paper-typeahead>
-      </template>
-    </dom-bind>
-    <h1>Fetch data on keypress.</h1>
-    <pre>
+  <demo-snippet>
+    <template>
+      <dom-bind>
+        <template is="dom-bind" id="object-list">
+          <paper-typeahead
+            label="which color"
+            data-key="name.title"
+            data="[[data]]"></paper-typeahead>
+        </template>
+      </dom-bind>
+    </template>
+  </demo-snippet>
+  <h1>Fetch data on keypress.</h1>
+  <pre>
       <code>
       document.querySelector('#data-fetch').fetchFn = function(typedValue) {
         return Promise.resolve().then(() => ['red', 'green', 'blue', 'teal']);
       }
       </code>
     </pre>
-    <dom-bind>
-      <template is="dom-bind" id="data-fetch">
-        <paper-typeahead
-          label="which color"
-          fetch-data="[[fetchFn]]"
-          ></paper-typeahead>
-      </template>
-    </dom-bind>
-    <script>
-      var v0 = document.querySelector('#data-fetch');
+  <demo-snippet>
+    <template>
+      <dom-bind>
+        <template is="dom-bind" id="data-fetch">
+          <paper-typeahead
+            label="which color"
+            fetch-data="[[fetchFn]]"
+            ></paper-typeahead>
+        </template>
+      </dom-bind>
+    </template>
+  </demo-snippet>
+  <script>
+    var v0 = document.querySelector('#data-fetch');
       var v1 = v0.parentNode;
       v0.fetchFn = v1.fetchFn = function(typedValue) {
         return Promise.resolve().then(() => ['red', 'green', 'blue', 'teal']);
@@ -103,6 +111,6 @@
         {name: {title: 'teal'}},
         {name: {title: 'purple'}},
       ]
-    </script>
-  </body>
+  </script>
+</body>
 </html>
