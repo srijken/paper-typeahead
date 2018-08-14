@@ -55,11 +55,11 @@ Custom property | Description | Default
       :host {
         @apply --paper-font-common-base;
         --paper-input-container-label: {
-          z-index: -1;
+          /* z-index: -1; */
         };
 
         --paper-input-container-underline: {
-          z-index: -1;
+          /* z-index: -1; */
         };
 
         display: block;
@@ -77,6 +77,24 @@ Custom property | Description | Default
       input:-ms-input-placeholder {
         color: var(--paper-input-container-color, var(--secondary-text-color));
       }
+
+      /* In 1.x, the <input> is distributed to paper-input-container, which styles it.
+      In 2.x the <iron-input> is distributed to paper-input-container, which styles
+      it, but in order for this to work correctly, we need to reset some
+      of the native input's properties to inherit (from the iron-input) */
+      iron-input > input {
+        @apply --paper-input-container-shared-input-style;
+        font-family: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        letter-spacing: inherit;
+        word-spacing: inherit;
+        line-height: inherit;
+        text-shadow: inherit;
+        color: inherit;
+        cursor: inherit;
+      }
+
       paper-input-container {
         @apply --paper-typeahead-input;
       }
@@ -88,6 +106,7 @@ Custom property | Description | Default
         overflow: auto;
         -webkit-overflow-scrolling: touch;
         max-height: var(--paper-typeahead-results-layer-max-height, auto);
+        z-index:1;
         @apply --paper-typeahead-results;
       }
       .iron-selected:not(paper-input-container) {
@@ -116,6 +135,7 @@ Custom property | Description | Default
         display: none;
       }
     </style>
+    
     <paper-input-container
         class="selectable"
         no-label-float="[[noLabelFloat]]"
@@ -124,40 +144,15 @@ Custom property | Description | Default
         disabled$="[[disabled]]"
         invalid="[[invalid]]">
       <slot name="prefix" slot="prefix"></slot>
-      <label hidden$="[[!label]]" on-tap="_onLabelTap" slot="input">[[label]]</label>
-      <input
-          is="iron-input"
-          id="input"
-          aria-labelledby$="[[_ariaLabelledBy]]"
-          aria-describedby$="[[_ariaDescribedBy]]"
-          disabled$="[[disabled]]"
-          bind-value="{{value}}"
-          value="{{typedValue::input}}"
-          invalid="{{invalid}}"
-          prevent-invalid-input="[[preventInvalidInput]]"
-          allowed-pattern="[[allowedPattern]]"
-          validator="[[validator]]"
-          type$="[[type]]"
-          pattern$="[[pattern]]"
-          required$="[[required]]"
-          autocomplete$="[[autocomplete]]"
-          autofocus$="[[autofocus]]"
-          inputmode$="[[inputmode]]"
-          minlength$="[[minlength]]"
-          maxlength$="[[maxlength]]"
-          min$="[[min]]"
-          max$="[[max]]"
-          step$="[[step]]"
-          name$="[[name]]"
-          placeholder$="[[placeholder]]"
-          readonly$="[[readonly]]"
-          size$="[[size]]"
-          autocapitalize$="[[autocapitalize]]"
-          autocorrect$="on"
-          on-change="_onChange" slot="input">
+      <label hidden$="[[!label]]" on-tap="_onLabelTap" for$="[[_inputId]]" slot="label">[[label]]</label>
+
+      <span id="template-placeholder"></span>
+
+      
       <slot name="suffix" slot="suffix"></slot>
       <paper-input-error tabindex="-1" slot="input">[[errorMessage]]</paper-input-error>
     </paper-input-container>
+    
     <paper-material
       hidden$="[[_hideResults]]"
       elevation="[[elevation]]"
@@ -180,6 +175,80 @@ Custom property | Description | Default
         </template>
       </iron-selector>
     </paper-material>
+  </template>
+
+  <template id="v0">
+    <input
+      is="iron-input"
+      id="input"
+      aria-labelledby$="[[_ariaLabelledBy]]"
+      aria-describedby$="[[_ariaDescribedBy]]"
+      disabled$="[[disabled]]"
+      bind-value="{{value}}"
+      value="{{typedValue::input}}"
+      invalid="{{invalid}}"
+      prevent-invalid-input="[[preventInvalidInput]]"
+      allowed-pattern="[[allowedPattern]]"
+      validator="[[validator]]"
+      type$="[[type]]"
+      pattern$="[[pattern]]"
+      required$="[[required]]"
+      autocomplete$="[[autocomplete]]"
+      autofocus$="[[autofocus]]"
+      inputmode$="[[inputmode]]"
+      minlength$="[[minlength]]"
+      maxlength$="[[maxlength]]"
+      min$="[[min]]"
+      max$="[[max]]"
+      step$="[[step]]"
+      name$="[[name]]"
+      placeholder$="[[placeholder]]"
+      readonly$="[[readonly]]"
+      size$="[[size]]"
+      autocapitalize$="[[autocapitalize]]"
+      autocorrect$="on"
+      on-change="_onChange" slot="input">
+  </template>
+
+  <template id="v1">
+    <iron-input bind-value="{{value}}" slot="input"
+      class="input-element"
+      id$="[[_inputId]]"
+      maxlength$="[[maxlength]]"
+      allowed-pattern="[[allowedPattern]]"
+      invalid="{{invalid}}"
+      validator="[[validator]]">
+    <input
+      aria-labelledby$="[[_ariaLabelledBy]]"
+      aria-describedby$="[[_ariaDescribedBy]]"
+      disabled$="[[disabled]]"
+      value="{{typedValue::input}}"
+
+      prevent-invalid-input="[[preventInvalidInput]]"
+      type$="[[type]]"
+      pattern$="[[pattern]]"
+      required$="[[required]]"
+      autocomplete$="[[autocomplete]]"
+      autofocus$="[[autofocus]]"
+      inputmode$="[[inputmode]]"
+      minlength$="[[minlength]]"
+      maxlength$="[[maxlength]]"
+      min$="[[min]]"
+      max$="[[max]]"
+      step$="[[step]]"
+      name$="[[name]]"
+      placeholder$="[[placeholder]]"
+      readonly$="[[readonly]]"
+      size$="[[size]]"
+      autocapitalize$="[[autocapitalize]]"
+      autocorrect$="on"
+      on-change="_onChange"
+      tabindex$="[[tabIndex]]"
+      autosave$="[[autosave]]"
+      results$="[[results]]"
+      accept$="[[accept]]"
+      multiple$="[[multiple]]">
+    </iron-input>
   </template>
 </dom-module>
 <script src="paper-typeahead.js"></script>
